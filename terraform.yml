@@ -1,0 +1,110 @@
+---
+- name: Terraform
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  vars:
+    terraform_cloud_provider: azure
+    terraform_project_path: "{{ playbook_dir }}/terraform_files/{{ terraform_cloud_provider }}/"
+    terraform_binary_path: "{{ playbook_dir }}/terraform"
+    terraform_workspace: 'AZURE'
+    terraform_state: present
+    terraform_force_init: true
+    verbosity_level: 2
+
+  tasks:
+
+  - name: debug TF_DATA_DIR
+    debug:
+      msg: "{{ terraform_cloud_provider }} - {{ lookup('env','TF_DATA_DIR') }}"
+      verbosity: "{{ verbosity_level }}"
+    ignore_errors: true
+
+  - name: debug terraform_project_path
+    debug:
+      var: terraform_project_path
+      verbosity: "{{ verbosity_level }}"      
+
+  - name: debug terraform_workspace
+    debug:
+      var: terraform_workspace
+      verbosity: "{{ verbosity_level }}"      
+
+  - name: debug terraform_binary_path
+    debug:
+      var: terraform_binary_path
+      verbosity: "{{ verbosity_level }}"      
+
+  - name: debug cloud_variables
+    debug:
+      var: cloud_variables[terraform_cloud_provider]
+      verbosity: "{{ verbosity_level }}"      
+
+  - name: terraforming - state present
+    terraform:
+      state: "{{ terraform_state }}"
+      project_path: "{{ terraform_project_path }}"
+      binary_path: "{{ terraform_binary_path }}"
+      variables: "{{ cloud_variables[terraform_cloud_provider] }}"
+      # workspace added in ansible 2.7
+      workspace: "{{ terraform_workspace }}"
+      force_init: "{{ terraform_force_init }}"
+    register: terraform_result
+    # environment is loaded from inventory/host_vars/localhost/vars.yml
+    environment: "{{ cloud_environment[terraform_cloud_provider] }}"
+    when: terraform_state == 'present'
+
+  - name: terraforming - state absent
+    terraform:
+      state: "{{ terraform_state }}"
+      project_path: "{{ terraform_project_path }}"
+      binary_path: "{{ terraform_binary_path }}"
+      workspace: "{{ terraform_workspace }}"
+      variables: "{{ cloud_variables[terraform_cloud_provider] }}"
+    register: terraform_result_destroy
+    environment: "{{ cloud_environment[terraform_cloud_provider] }}"
+    when: terraform_state == 'absent'
+
+  - name: terraform - stdout
+    debug:
+      var: terraform_result.stdout_lines
+      verbosity: "{{ verbosity_level }}"      
+
+  - name: terraform - stderr_lines
+    debug:
+      var: terraform_result.stderr_lines
+      verbosity: "{{ verbosity_level }}"      
+
+  - name: terraform - outputs
+    debug:
+      var: terraform_result.outputs
+      verbosity: "{{ verbosity_level }}"      
+
+  - name: terraform - ip_address
+    debug:
+      var: terraform_result.outputs.ip_address.value
+      verbosity: "{{ verbosity_level }}"      
+
+  - name: define regexp
+    set_fact:
+      regexp: "^\\[{{ terraform_cloud_provider }}\\]$"
+      inventory_path: "{{ playbook_dir }}/inventory/default"
+
+  - name: terraform - regexp
+    debug:
+      var: regexp
+      verbosity: "{{ verbosity_level }}"      
+
+  - name: debug inventory_path
+    debug:
+      var: inventory_path
+      verbosity: "{{ verbosity_level }}"      
+
+  - name: write IP address to inventory
+    lineinfile:
+      state: present
+      path: "{{ inventory_path }}"
+      insertafter: "{{ regexp }}"
+      line: "{{ terraform_result.outputs.ip_address.value }}"
+    when: terraform_state == 'present'

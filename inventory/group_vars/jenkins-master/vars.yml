@@ -1,0 +1,81 @@
+---
+# jenkins role variables
+jenkins_hostname: localhost
+jenkins_http_port: 8080
+jenkins_url_prefix: ""
+jenkins_connection_delay: 5
+jenkins_connection_retries: 60
+
+# jenkins_version: "2.131"
+jenkins_plugin_timeout: 300
+jenkins_plugins:
+  - active-directory
+  - ansicolor
+  - blueocean
+  - build-timeout
+  - configuration-as-code
+  - configuration-as-code-support  
+  - credentials-binding
+  - git
+  - greenballs
+  - job-dsl
+  - ldap
+  - matrix-auth
+  - monitoring
+  - nunit
+  - pam-auth
+  - pipeline-input-step
+  - pipeline-stage-view
+  - role-strategy
+  - ssh-slaves
+  - timestamper
+  - workflow-aggregator
+  - workflow-multibranch
+  - ws-cleanup
+  - vmware-vrealize-orchestrator
+
+jenkins_admin_password: "{{ lookup('pmp', 'resourceName=demo-devops;accountName=jenkins_admin_password') }}"
+jenkins_credential_secret_text_entries:
+  - id: ansible_vault
+    description: 'Ansible Vault credential'
+    secret_text: "{{ vault_password }}"
+
+# variable for reading inventory and jcasc
+static_inventory_file: "{{ lookup('env','WORKSPACE') }}/inventory/default"
+static_inventory_dump: "{{ lookup('env','WORKSPACE') }}/scripts/get-inventory.py"
+
+
+jenkins_ssh_pub_key: "{{ lookup('env','WORKSPACE') }}/files/jenkins-slave.pub"
+
+jenkins_innersource_vra_project_key: "{{ lookup('pmp', 'resourceName=demo-devops-keys;accountName=innersource_vra_project_key') }}"
+jenkins_slave_ssh_private_key: "{{ lookup('pmp', 'resourceName=demo-devops-keys;accountName=jenkins_slave_ssh_private_key') }}"
+jenkins_azure_slave_ssh_private_key: "{{ lookup('pmp', 'resourceName=demo-devops-keys;accountName=azure_ssh_private_key') }}"
+
+jenkins_credential_ssh_entries:
+  - id: innersource-app-key
+    description: Innersource application private key
+    username: jenkins
+    source: /var/lib/jenkins/.ssh/app_innersource_id_rsa
+    filename: app_innersource_id_rsa
+  - id: slave_ssh_private_key
+    description: Slave SSH private key
+    username: jenkins
+    source: /var/lib/jenkins/.ssh/slave_ssh_private_key
+    filename: slave_ssh_private_key
+  - id: azure_slave_ssh_private_key
+    description: Azure slave SSH private key
+    username: jenkins
+    source: /var/lib/jenkins/.ssh/azure_slave_ssh_private_key
+    filename: azure_slave_ssh_private_key
+
+# apache variables
+apache_role_server_admin: admins@cloud-msp.net
+
+# ansible-role-ssl-certs role facts
+ssl_certs_path: /etc/ssl/certs
+ssl_certs_locality: "Chicago"
+ssl_certs_organization: "Contoso"
+ssl_certs_state: "IL"
+ssl_certs_days: "730"
+ssl_certs_path_owner: "root"
+ssl_certs_path_group: "root"  

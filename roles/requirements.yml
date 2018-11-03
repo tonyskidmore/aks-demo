@@ -1,0 +1,8 @@
+---
+- src: https://github.com/tonyskidmore/ansible-role-docker.git
+  scm: git
+  name: ansible-role-docker
+
+- src: https://github.com/tonyskidmore/ansible-role-terraform.git
+  scm: git
+  name: ansible-role-terraform

@@ -1,0 +1,40 @@
+- name: test inv
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  vars:
+    terraform_result:
+      outputs:
+        ip_address:
+          value: 192.168.0.1
+    terraform_cloud_provider: azure
+    inventory_path: "{{ inventory_file }}"
+        
+
+  tasks:
+
+  - name: define regexp
+    set_fact:
+      regexp: "^\\[azure\\]$"
+      inventory_path: "{{ playbook_dir }}/inventory/default"
+
+  - name: terraform - regexp
+    debug:
+      var: regexp
+
+  - name: search
+    debug:
+      msg: "{{ '[azure]' | regex_search(regexp) }}"
+
+  - name: debug inventory_path
+    debug:
+      var: inventory_path
+
+
+  - name: write IP address to inventory
+    lineinfile:
+      state: present
+      path: "{{ inventory_path }}"
+      insertafter: "{{ regexp }}"
+      line: "{{ terraform_result.outputs.ip_address.value }}"

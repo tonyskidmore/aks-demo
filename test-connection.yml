@@ -1,0 +1,20 @@
+---
+- name: querying hosts
+  hosts: cloud_servers
+  gather_facts: False
+
+  tasks:
+
+  - name: delay for server to become available
+    wait_for_connection:
+      delay: 0
+      sleep: 5
+      timeout: 300
+
+  - name: now get facts
+    setup:
+      filter: 'ansible_*'
+
+  - name: debug ansible_nodename
+    debug:
+      var: ansible_nodename

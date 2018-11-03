@@ -1,0 +1,6 @@
+!roles/*
+roles/*/
+.vs/
+terraform_files/
+terraform.tfstate.d/
+.terraform/

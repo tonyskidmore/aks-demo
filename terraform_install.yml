@@ -1,0 +1,8 @@
+---
+- name: Install Terraform
+  hosts: localhost
+  connection: local
+
+  roles:
+  - name: Terraform client install
+    role: ansible-role-terraform
