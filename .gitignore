@@ -4,3 +4,4 @@ roles/*/
 terraform_files/
 terraform.tfstate.d/
 .terraform/
+inventory/default
