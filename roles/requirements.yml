@@ -6,3 +6,23 @@
 - src: https://github.com/tonyskidmore/ansible-role-terraform.git
   scm: git
   name: ansible-role-terraform
+
+- src: https://github.com/tonyskidmore/ansible-role-java.git
+  scm: git
+  name: ansible-role-java
+  
+- src: https://github.com/tonyskidmore/ansible-role-apache.git
+  scm: git
+  name: ansible-role-apache 
+
+- src: https://github.com/tonyskidmore/ansible-role-jenkins-master.git
+  scm: git
+  name: ansible-role-jenkins-master
+
+- src: https://github.com/tonyskidmore/ansible-role-ssl-certs.git
+  scm: git
+  name: ansible-role-ssl-certs
+
+- src: https://github.com/tonyskidmore/ansible-role-ansible.git
+  scm: git
+  name: ansible-role-ansible  
