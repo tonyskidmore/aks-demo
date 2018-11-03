@@ -34,22 +34,19 @@ jenkins_plugins:
   - ws-cleanup
   - vmware-vrealize-orchestrator
 
-jenkins_admin_password: "{{ lookup('pmp', 'resourceName=demo-devops;accountName=jenkins_admin_password') }}"
+jenkins_admin_password: "admin"
 jenkins_credential_secret_text_entries:
   - id: ansible_vault
     description: 'Ansible Vault credential'
     secret_text: "{{ vault_password }}"
 
 # variable for reading inventory and jcasc
-static_inventory_file: "{{ lookup('env','WORKSPACE') }}/inventory/default"
-static_inventory_dump: "{{ lookup('env','WORKSPACE') }}/scripts/get-inventory.py"
+static_inventory_file: "{{ playbook_dir }}/inventory/default"
+static_inventory_dump: "{{ playbook_dir }}/scripts/get-inventory.py"
 
-
-jenkins_ssh_pub_key: "{{ lookup('env','WORKSPACE') }}/files/jenkins-slave.pub"
-
-jenkins_innersource_vra_project_key: "{{ lookup('pmp', 'resourceName=demo-devops-keys;accountName=innersource_vra_project_key') }}"
-jenkins_slave_ssh_private_key: "{{ lookup('pmp', 'resourceName=demo-devops-keys;accountName=jenkins_slave_ssh_private_key') }}"
-jenkins_azure_slave_ssh_private_key: "{{ lookup('pmp', 'resourceName=demo-devops-keys;accountName=azure_ssh_private_key') }}"
+jenkins_innersource_vra_project_key: ""
+jenkins_slave_ssh_private_key: ""
+jenkins_azure_slave_ssh_private_key: ""
 
 jenkins_credential_ssh_entries:
   - id: innersource-app-key
@@ -70,6 +67,11 @@ jenkins_credential_ssh_entries:
 
 # apache variables
 apache_role_server_admin: admins@cloud-msp.net
+
+# ansible variables
+ansible_install_method: 'pip'
+ansible_install_version_pip: '2.7.1'
+ansible_install_pip_package: 'ansible[azure]'
 
 # ansible-role-ssl-certs role facts
 ssl_certs_path: /etc/ssl/certs

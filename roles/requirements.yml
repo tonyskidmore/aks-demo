@@ -23,6 +23,14 @@
   scm: git
   name: ansible-role-ssl-certs
 
+- src: https://github.com/tonyskidmore/ansible-role-repo-epel.git
+  scm: git
+  name: ansible-role-repo-epel 
+
 - src: https://github.com/tonyskidmore/ansible-role-ansible.git
   scm: git
-  name: ansible-role-ansible  
+  name: ansible-role-ansible
+
+- src: https://github.com/tonyskidmore/ansible-role-pip.git
+  scm: git
+  name: ansible-role-pip

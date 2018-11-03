@@ -1,0 +1,18 @@
+---
+- name: stop services
+  service:
+    name: "{{ item }}"
+    state: stopped
+  become: yes
+  with_items:
+    - jenkins
+    - httpd
+
+- name: start services
+  service:
+    name: "{{ item }}"
+    state: started
+  become: yes
+  with_items:
+    - jenkins
+    - httpd

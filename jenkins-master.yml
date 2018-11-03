@@ -6,25 +6,28 @@
   - import_tasks: jenkins-master-packages.yml    
 
   roles:
-    - role: ansible-role-java
-      become: yes
+  - role: ansible-role-java
+    become: yes
     
-    - role: ansible-role-ssl-certs
-      become: yes
+  - role: ansible-role-ssl-certs
+    become: yes
 
-    - role: ansible-role-apache
-      become: yes
+  - role: ansible-role-apache
+    become: yes
 
-    - role: ansible-role-jenkins-master
-      become: yes
+  - role: ansible-role-jenkins-master
+    become: yes
 
-    - role: ansible-role-ansible
-      become: yes      
+  - role: ansible-role-terraform
+    become: yes 
 
-#  post_tasks:
-#  - import_tasks: jenkins-master-reverse-proxy.yml
-#  - import_tasks: jenkins-master-restart-services.yml
-#  - import_tasks: jenkins-master-wait-startup.yml
+  - role: ansible-role-ansible
+    become: yes      
+
+  post_tasks:
+  - import_tasks: jenkins-master-reverse-proxy.yml
+  - import_tasks: jenkins-master-restart-services.yml
+  - import_tasks: jenkins-master-wait-startup.yml
 #  - import_tasks: jenkins-master-post-config.yml
 #  - import_tasks: jenkins-master-hashicorp-vault.yml
 #  - import_tasks: jenkins-master-jcasc.yml

@@ -6,6 +6,9 @@ localhost
 [cloud_servers:children]
 azure
 
+[jenkins-master:children]
+azure
+
 [azure:vars]
 ansible_ssh_private_key_file = ~/.ssh/aks_demo
 ansible_user = cloud_admin

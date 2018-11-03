@@ -35,3 +35,5 @@ ansible-playbook terraform.yml \
                                 --extra-vars "terraform_workspace=AZURE" "$@"
 
 ansible-playbook test-connection.yml
+
+ansible-playbook jenkins-master.yml

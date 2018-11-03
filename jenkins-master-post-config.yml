@@ -1,0 +1,85 @@
+---
+- name: create secret text entries
+  jenkins_script:
+    script: "{{ lookup('template', 'create-secret-text-credentials.groovy.j2') }}"
+    user: "{{ jenkins_admin_username }}"
+    password: "{{ jenkins_admin_password }}"
+    # url: "{{ jenkins_url | default(omit) }}"
+    url: http://localhost:8080
+    validate_certs: no
+  register: jenkins_secret_text_result
+  ignore_errors: True
+  with_items: "{{ jenkins_credential_secret_text_entries }}"
+  when:
+    - jenkins_credential_secret_text_entries is defined
+
+- name: create global environment variables
+  jenkins_script:
+    script: "{{ lookup('template', 'create-global-environment-variables.j2') }}"
+    user: "{{ jenkins_admin_username }}"
+    password: "{{ jenkins_admin_password }}"
+    # url: "{{ jenkins_url | default(omit) }}"
+    url: http://localhost:8080
+    validate_certs: no
+  register: jenkins_global_environment_variables_result
+  ignore_errors: True
+  when:
+    - jenkins_global_environment_variables is defined
+
+- name: debug jenkins_global_environment_variables_result
+  debug:
+    var: jenkins_global_environment_variables_result 
+
+- name: create .ssh directory
+  file:
+    state: directory
+    # change to variables
+    path: /var/lib/jenkins/.ssh
+    owner: jenkins
+    group: jenkins
+    mode: 0700
+  become: yes      
+
+- name: create app_innersource_id_rsa private key
+  copy:
+    content: "{{ jenkins_innersource_vra_project_key }}"
+    dest: "{{ (jenkins_credential_ssh_entries | selectattr('id','search','innersource-app-key') | list | first).source }}"
+    owner: jenkins
+    group: jenkins
+    mode: 0600
+  become: yes
+
+- name: create slave_ssh_private_key private key
+  copy:
+    content: "{{ jenkins_slave_ssh_private_key }}"
+    dest: "{{ (jenkins_credential_ssh_entries | selectattr('id','search','slave_ssh_private_key') | list | first).source }}"
+    owner: jenkins
+    group: jenkins
+    mode: 0600
+  become: yes   
+
+- name: create azure_slave_ssh_private_key private key
+  copy:
+    content: "{{ jenkins_azure_slave_ssh_private_key }}"
+    dest: "{{ (jenkins_credential_ssh_entries | selectattr('id','search','azure_slave_ssh_private_key') | list | first).source }}"
+    owner: jenkins
+    group: jenkins
+    mode: 0600
+  become: yes         
+
+- name: create ssh credential entries
+  jenkins_script:
+    script: "{{ lookup('template', 'create-ssh-credentials.groovy.j2') }}"
+    user: "{{ jenkins_admin_username }}"
+    password: "{{ jenkins_admin_password }}"
+    url: http://localhost:8080
+    validate_certs: no
+  with_items: "{{ jenkins_credential_ssh_entries }}"
+  register: jenkins_script_ssh_result
+  ignore_errors: True
+  when:
+    - jenkins_credential_ssh_entries is defined
+
+- name: debug jenkins_script_ssh_result
+  debug:
+    var: jenkins_script_ssh_result 

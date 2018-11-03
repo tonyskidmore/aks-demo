@@ -1,0 +1,32 @@
+---
+- name: install packages
+  yum:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+    - git
+    - unzip
+    - python-setuptools    
+  become: yes
+
+- name: install pip
+  easy_install:
+    name: pip
+    state: latest
+  become: yes
+
+- name: update pip to latest
+  pip:
+    name: pip
+    state: latest
+    umask: "0022"
+  become: yes
+
+# required for hashi_vault lookup https://docs.ansible.com/ansible/latest/plugins/lookup/hashi_vault.html
+# installing for testing for now
+- name: install hashicorp vault python module
+  pip:
+    name: hvac
+    umask: "0022"
+  become: yes

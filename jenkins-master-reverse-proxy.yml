@@ -1,0 +1,10 @@
+---
+
+- name: create apache default-site.j2
+  template:
+    src: templates/apache-default-site.j2
+    dest: /etc/httpd/conf.d/default-site.conf
+    owner: root
+    group: root
+    mode: 0644
+  become: yes 
