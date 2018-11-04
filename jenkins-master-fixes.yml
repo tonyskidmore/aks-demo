@@ -1,0 +1,6 @@
+---
+
+# issue with jenkins not liking github certificates
+- name: reinstall ca-certificates for github certificate access issue
+  command: "yum -y reinstall ca-certificates"
+  become: yes

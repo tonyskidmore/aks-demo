@@ -12,9 +12,23 @@
     - libsemanage-python
   become: yes
 
+# issue with jenkins not liking github certificates
 - name: reinstall ca-certificates for github certificate access issue
   command: "yum -y reinstall ca-certificates"
   become: yes
+
+# BAD method - tries to uninstall systemd :)
+#- name: remove existing ca-certificates package
+#  yum:
+#    name: ca-certificates
+#    state: absent
+#  become: yes
+
+#- name: install latest ca-certificates package
+#  yum:
+#    name: ca-certificates
+#    state: latest
+#  become: yes
 
 - name: install pip
   easy_install:
@@ -37,20 +51,22 @@
     umask: "0022"
   become: yes
 
-- name: install openshift module
-  pip:
-    name: openshift
-    umask: "0022"
-  become: yes
+# error installing openshift module - investigate later
+#- name: install openshift module
+#  pip:
+#    name: openshift
+#    umask: "0022"
+#  become: yes
 
-- name: install PyYAML module
-  pip:
-    name: PyYAML
-    umask: "0022"
-  become: yes
+#- name: install PyYAML module - k8s module says it needs PyYAML >= 3.11 (3.10 installed by default)
+#  pip:
+#    name: PyYAML
+#    umask: "0022"
+#  become: yes
 
-- name: install azure-cli module
-  pip:
-    name: azure-cli
-    umask: "0022"
-  become: yes  
+# errors - grrr - leave it off or maybe try yum option later
+#- name: install azure-cli module
+#  pip:
+#    name: azure-cli
+#    umask: "0022"
+#  become: yes  
