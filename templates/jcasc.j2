@@ -1,0 +1,48 @@
+---
+jenkins:
+  systemMessage: "Configured automatically with JCasC plugin\n"
+  numExecutors: 5
+  #globalNodeProperties:
+  #  - envVars:
+  #      env:
+  #        - key: FOO
+  #          value: BAR
+  # stops normal http communication
+  #crumbIssuer:
+  #  standard:
+  #    excludeClientIPFromCrumb: false
+#unclassified:
+#  location:
+#    url: "{{ ansible_default_ipv4.address }}"
+tool:
+  git:
+    installations:
+    - home: "git"
+      name: "Default"
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - string:
+              scope: GLOBAL
+              id: "secret-text"
+              secret: ${test} #Load from Hashicorp Vault
+              description: "Secret Text"      
+jobs:
+  - script: >
+      pipelineJob('jenkins-hello-world') {
+          definition {
+              cpsScm {
+                  scriptPath 'Jenkinsfile'
+                  scm {
+                    git {
+                        remote {
+                            url 'https://github.com/AdamGoldsmith/aks-cluster.git'
+                        }
+                        branch '*/master'
+                        extensions {}
+                    }
+                  }
+              }
+          }
+      }

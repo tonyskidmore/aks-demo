@@ -1,0 +1,58 @@
+---
+# configuration-as-code (jcasc)
+# https://github.com/jenkinsci/configuration-as-code-plugin
+
+
+# get json output from static script 'default' but exclude vsphere
+# this is used to add the agent entries into the jcasc config yaml
+# scripts/get-inventory.py inventory/default vsphere
+- name: get static inventory output
+  command: "{{ static_inventory_dump }} {{ static_inventory_file }} vsphere"
+  changed_when: false
+  register: static_inv_content
+  ignore_errors: true
+  delegate_to: localhost
+
+- name: debug static_inv_content
+  debug:
+    var: static_inv_content
+
+- name: set inv_hosts
+  set_fact:
+    inv_hosts: "{{ static_inv_content.stdout }}"
+
+- name: debug static_inv_content
+  debug:
+    var: inv_hosts
+
+- name: create jcasc vault file
+  template:
+    src: templates/jcasc_vault_file.j2
+    dest: "{{ jenkins_jcasc_vault_file }}"
+    owner: jenkins
+    group: jenkins
+    mode: 0644
+  become: yes 
+  when:
+    - jenkins_jcasc_vault_file is defined
+    - jenkins_jcasc_vault_token is defined
+    - jenkins_jcasc_vault_url is defined
+    - jenkins_jcasc_vault_path is defined
+
+- name: create jcasc.yml
+  template:
+    src: templates/jcasc.j2
+    dest: /var/lib/jenkins/jenkins.yaml
+    owner: jenkins
+    group: jenkins
+    mode: 0644
+  become: yes  
+
+- name: add CASC_VAULT_FILE variable to jenkins config
+  lineinfile:
+    path: /etc/init.d/jenkins
+    state: present
+    line: 'export CASC_VAULT_FILE="/var/lib/jenkins/secrets/vault.file"'
+    insertafter: '### END INIT INFO'
+  become: yes  
+

@@ -7,7 +7,9 @@
     packages:
     - git
     - unzip
-    - python-setuptools    
+    - python-setuptools
+    - libselinux-python
+    - libsemanage-python
   become: yes
 
 - name: install pip
