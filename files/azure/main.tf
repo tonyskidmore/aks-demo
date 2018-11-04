@@ -58,6 +58,18 @@ resource "azurerm_network_security_group" "nsg" {
         destination_address_prefix = "*"
     }
 
+    security_rule {
+        name                       = "HTTPS"
+        priority                   = 1011
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "443"
+        source_address_prefix      = "${var.nsg_source_address_prefix}"
+        destination_address_prefix = "*"
+    }
+
     tags {
         environment = "Terraform Demo"
     }
@@ -80,15 +92,26 @@ resource "azurerm_lb_backend_address_pool" "backend_pool" {
   name                = "BackendPool1"
 }
 
-resource "azurerm_lb_nat_rule" "tcp" {
+resource "azurerm_lb_nat_rule" "ssh" {
   resource_group_name            = "${azurerm_resource_group.rg.name}"
   loadbalancer_id                = "${azurerm_lb.lb.id}"
-  name                           = "SSH-VM"
+  name                           = "SSH"
   protocol                       = "tcp"
-  frontend_port                  = "${var.lb_frontend_port}"
+  frontend_port                  = "${var.lb_ssh_frontend_port}"
   backend_port                   = 22
   frontend_ip_configuration_name = "LoadBalancerFrontEnd"
   count                          = 1
+}
+
+resource "azurerm_lb_nat_rule" "https" {
+  resource_group_name            = "${azurerm_resource_group.rg.name}"
+  loadbalancer_id                = "${azurerm_lb.lb.id}"
+  name                           = "HTTPS"
+  protocol                       = "tcp"
+  frontend_port                  = "${var.lb_https_frontend_port}"
+  backend_port                   = 443
+  frontend_ip_configuration_name = "LoadBalancerFrontEnd"
+  count                          = 2
 }
 
 # Create network interface
@@ -103,7 +126,11 @@ resource "azurerm_network_interface" "nic" {
         subnet_id                     = "${azurerm_subnet.subnet.id}"
         private_ip_address_allocation = "dynamic"
         load_balancer_backend_address_pools_ids = ["${azurerm_lb_backend_address_pool.backend_pool.id}"]
-        load_balancer_inbound_nat_rules_ids = ["${element(azurerm_lb_nat_rule.tcp.*.id, count.index)}"]
+        load_balancer_inbound_nat_rules_ids = [
+            "${element(azurerm_lb_nat_rule.ssh.*.id, 1)}",
+            "${element(azurerm_lb_nat_rule.https.*.id, 2)}"
+        ]
+ 
     }
 
     tags {

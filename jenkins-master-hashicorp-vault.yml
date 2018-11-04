@@ -1,0 +1,42 @@
+---
+- name: install vault in dev mode
+  import_role:
+    name: ansible-role-vault-dev
+  become: yes
+
+- name: debug vault_root_token
+  debug:
+    var: vault_root_token
+
+- name: set jenkins_jcasc_vault_token fact
+  set_fact:
+    jenkins_jcasc_vault_token: "{{ vault_root_token }}"
+
+- name: debug jenkins_jcasc_vault_token
+  debug:
+    var: jenkins_jcasc_vault_token    
+
+- name: set vault secret engine to v1
+  shell: "vault secrets enable -version=1 kv"
+  register: vault_secret_engine_version
+  environment:
+    VAULT_ADDR: "http://127.0.0.1:8200"
+    VAULT_TOKEN: "{{ jenkins_jcasc_vault_token }}"
+  ignore_errors: yes
+
+- name: debug vault_secret_engine_version
+  debug:
+    var: vault_secret_engine_version
+
+- name: write vault secret
+#  shell: "vault write secret/jenkins/master ldap_password={{ jenkins_dir_svc_password }}"
+  shell: "vault kv put kv/jenkins/master test='test123'"
+  register: vault_write
+  environment:
+    VAULT_ADDR: "http://127.0.0.1:8200"
+    VAULT_TOKEN: "{{ jenkins_jcasc_vault_token }}"
+  ignore_errors: yes
+
+- name: debug vault_write
+  debug:
+    var: vault_write

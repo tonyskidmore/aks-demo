@@ -34,3 +34,7 @@
 - src: https://github.com/tonyskidmore/ansible-role-pip.git
   scm: git
   name: ansible-role-pip
+
+- src: https://github.com/tonyskidmore/ansible-role-vault-dev.git
+  scm: git
+  name: ansible-role-vault-dev

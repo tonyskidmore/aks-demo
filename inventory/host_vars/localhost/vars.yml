@@ -10,7 +10,8 @@ cloud_variables:
     nsg_source_address_prefix: "{{ ((terraform_source_ip is defined) and (terraform_source_ip | length > 0)) | ternary(terraform_source_ip,'*') }}"
     admin_username: cloud_admin
     ssh_key_data: "{{ ansible_user_dir }}/.ssh/aks_demo.pub"
-    lb_frontend_port: "80"
+    lb_ssh_frontend_port: "80"
+    lb_https_frontend_port: "443"
 
 cloud_environment:
   azure:

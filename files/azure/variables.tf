@@ -13,9 +13,14 @@ variable "nsg_source_address_prefix" {
   default     = "*"  
 }
 
-variable "lb_frontend_port" {
+variable "lb_ssh_frontend_port" {
   description = "Front end port for redirection to SSH."
   default     = "80"  
+}
+
+variable "lb_https_frontend_port" {
+  description = "Front end port for redirection to SSH."
+  default     = "443"  
 }
 
 variable "location" {
