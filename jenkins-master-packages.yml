@@ -10,7 +10,10 @@
     - python-setuptools
     - libselinux-python
     - libsemanage-python
-    - ca-certificates
+  become: yes
+
+- name: reinstall ca-certificates for github certificate access issue
+  command: "yum -y reinstall ca-certificates"
   become: yes
 
 - name: install pip
@@ -33,3 +36,21 @@
     name: hvac
     umask: "0022"
   become: yes
+
+- name: install openshift module
+  pip:
+    name: openshift
+    umask: "0022"
+  become: yes
+
+- name: install PyYAML module
+  pip:
+    name: PyYAML
+    umask: "0022"
+  become: yes
+
+- name: install azure-cli module
+  pip:
+    name: azure-cli
+    umask: "0022"
+  become: yes  
