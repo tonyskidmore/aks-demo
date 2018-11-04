@@ -30,7 +30,7 @@ credentials:
               description: "Secret Text"      
 jobs:
   - script: >
-      pipelineJob('jenkins-hello-world') {
+      pipelineJob('aks-cluster') {
           definition {
               cpsScm {
                   scriptPath 'Jenkinsfile'

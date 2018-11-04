@@ -2,7 +2,7 @@
 - name: install packages
   yum:
     name: "{{ packages }}"
-    state: present
+    state: latest
   vars:
     packages:
     - git
@@ -10,6 +10,7 @@
     - python-setuptools
     - libselinux-python
     - libsemanage-python
+    - ca-certificates
   become: yes
 
 - name: install pip
