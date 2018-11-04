@@ -12,24 +12,6 @@
     - libsemanage-python
   become: yes
 
-# issue with jenkins not liking github certificates
-- name: reinstall ca-certificates for github certificate access issue
-  command: "yum -y reinstall ca-certificates"
-  become: yes
-
-# BAD method - tries to uninstall systemd :)
-#- name: remove existing ca-certificates package
-#  yum:
-#    name: ca-certificates
-#    state: absent
-#  become: yes
-
-#- name: install latest ca-certificates package
-#  yum:
-#    name: ca-certificates
-#    state: latest
-#  become: yes
-
 - name: install pip
   easy_install:
     name: pip
