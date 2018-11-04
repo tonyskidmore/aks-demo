@@ -27,12 +27,12 @@ jenkins_plugins:
   - pipeline-input-step
   - pipeline-stage-view
   - role-strategy
-  - ssh-slaves
+  - saml
   - timestamper
   - workflow-aggregator
   - workflow-multibranch
   - ws-cleanup
-  - vmware-vrealize-orchestrator
+
 
 jenkins_admin_password: "admin"
 jenkins_credential_secret_text_entries:
