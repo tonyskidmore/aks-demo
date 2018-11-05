@@ -46,7 +46,7 @@
 #    umask: "0022"
 #  become: yes
 
-# errors - grrr - leave it off or maybe try yum option later
+
 #- name: install azure-cli module
 #  pip:
 #    name: azure-cli

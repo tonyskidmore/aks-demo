@@ -34,3 +34,4 @@
   - import_tasks: jenkins-master-restart-services.yml
   - import_tasks: jenkins-master-wait-startup.yml
   - import_tasks: jenkins-master-fixes.yml
+  - import_tasks: jenkins-master-build-jobs.yml  

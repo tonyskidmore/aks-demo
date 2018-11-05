@@ -1,0 +1,10 @@
+---
+- name: run DNS job
+  uri:
+    url: "http://localhost:8080/job/register-jenkins-dns/build"
+    method: POST
+    user: "{{ jenkins_admin_username }}"
+    password: "{{ jenkins_admin_password }}"
+    force_basic_auth: yes
+    status_code: 201
+  ignore_errors: yes
