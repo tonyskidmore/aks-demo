@@ -29,8 +29,7 @@
     var: vault_secret_engine_version
 
 - name: write vault secret
-#  shell: "vault write secret/jenkins/master ldap_password={{ jenkins_dir_svc_password }}"
-  shell: "vault kv put kv/jenkins/master test='test123'"
+  shell: "vault kv put kv/jenkins/master az_subscription_id={{ az_subscription_id }} az_client_id={{ az_client_id }} az_secret={{ az_secret }} az_tenant={{ az_tenant }}"
   register: vault_write
   environment:
     VAULT_ADDR: "http://127.0.0.1:8200"

@@ -1,5 +1,7 @@
 # AKS Demo
 
+Passing extra-vars outside of the remo`@~/.azure/azure.yaml`
+
 ### Requires  
 
 - Private SSH key pair created with `ssh-keygen -t rsa -b 2048` in:  

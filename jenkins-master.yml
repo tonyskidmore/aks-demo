@@ -25,6 +25,7 @@
     become: yes      
 
   post_tasks:
+  - import_tasks: jenkins-master-az-cli.yml   
   - import_tasks: jenkins-master-reverse-proxy.yml
   - import_tasks: jenkins-master-restart-services.yml
   - import_tasks: jenkins-master-wait-startup.yml
@@ -32,4 +33,4 @@
   - import_tasks: jenkins-master-jcasc.yml
   - import_tasks: jenkins-master-restart-services.yml
   - import_tasks: jenkins-master-wait-startup.yml
-  - import_tasks: jenkins-master-fixes.yml   
+  - import_tasks: jenkins-master-fixes.yml

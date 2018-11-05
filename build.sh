@@ -36,4 +36,4 @@ ansible-playbook terraform.yml \
 
 ansible-playbook test-connection.yml
 
-ansible-playbook jenkins-master.yml
+ansible-playbook jenkins-master.yml --extra-vars "@~/.azure/azure.yaml"

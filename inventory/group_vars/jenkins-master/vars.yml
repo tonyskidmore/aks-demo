@@ -35,6 +35,12 @@ jenkins_plugins:
 
 
 jenkins_admin_password: "admin"
+az_subscription_id: ""
+az_client_id: ""
+az_secret: ""
+az_tenant: ""
+
+
 jenkins_credential_secret_text_entries:
   - id: ansible_vault
     description: 'Ansible Vault credential'
