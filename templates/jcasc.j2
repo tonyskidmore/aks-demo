@@ -25,9 +25,24 @@ credentials:
       - credentials:
           - string:
               scope: GLOBAL
-              id: "secret-text"
-              secret: ${test} #Load from Hashicorp Vault
-              description: "Secret Text"      
+              id: "az_subscription_id"
+              secret: ${az_subscription_id} #Load from Hashicorp Vault
+              description: "Azure Subscription ID"
+          - string:
+              scope: GLOBAL
+              id: "az_client_id"
+              secret: ${az_client_id} #Load from Hashicorp Vault
+              description: "Azure Client ID"
+          - string:
+              scope: GLOBAL
+              id: "az_secret"
+              secret: ${az_secret} #Load from Hashicorp Vault
+              description: "Azure Secret"
+          - string:
+              scope: GLOBAL
+              id: "az_tenant"
+              secret: ${az_tenant} #Load from Hashicorp Vault
+              description: "Azure Tenant ID"
 jobs:
   - script: >
       pipelineJob('aks-cluster') {
