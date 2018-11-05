@@ -1,6 +1,13 @@
 # AKS Demo
 
-Passing extra-vars outside of the remo`@~/.azure/azure.yaml`
+Passing extra-vars outside of the repo from `@~/.azure/azure.yaml`:  
+```
+jenkins_admin_password: "LetmeinPa$$w0rd"
+az_subscription_id: "26cd7884-a6e5-4b49-8db6-9008588200e0"
+az_client_id: "3f6812b7-6a8f-4505-a525-6d0c14ebca84"
+az_secret: "1+Gl00000ljsd78329838dhus8JKjsghjljw="
+az_tenant: "d6dc7617-3655-4f5a-bccc-b034c3f83e44"
+```
 
 ### Requires  
 

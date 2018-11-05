@@ -61,3 +61,20 @@ jobs:
               }
           }
       }
+  - script: >
+      pipelineJob('register-jenkins-dns') {
+          definition {
+              cpsScm {
+                  scriptPath 'Jenkinsfile'
+                  scm {
+                    git {
+                        remote {
+                            url 'https://github.com/tonyskidmore/register-jenkins-dns.git'
+                        }
+                        branch '*/master'
+                        extensions {}
+                    }
+                  }
+              }
+          }
+      }      
