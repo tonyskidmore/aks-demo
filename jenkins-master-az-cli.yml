@@ -1,34 +1,27 @@
 ---
-- name: install az-cli via yum
-  hosts: localhost
-  connection: local
-  gather_facts: False
+- name: "Import RPM GPG key"
+  rpm_key:
+    key: "https://packages.microsoft.com/keys/microsoft.asc"
+    state: present
+  become: True
 
-  tasks:
+- name: "Add azure-cli repository"
+  yum_repository:
+    name: "azure-cli"
+    description: "Azure CLI repo"
+    file: "/etc/yum.repos.d/azure-cli"
+    baseurl: "https://packages.microsoft.com/yumrepos/azure-cli"
+    gpgcheck: True
+    gpgkey: "https://packages.microsoft.com/keys/microsoft.asc"
+    state: "{{ state | default('present') }}"
+  become: True
 
-  - name: "Import RPM GPG key"
-    rpm_key:
-      key: "https://packages.microsoft.com/keys/microsoft.asc"
-      state: present
-    become: True
+- name: install azure-cli
+  yum:
+    name: "azure-cli"
+    state: present
+  become: True
 
-  - name: "Add azure-cli repository"
-    yum_repository:
-      name: "azure-cli"
-      description: "Azure CLI repo"
-      file: "/etc/yum.repos.d/azure-cli"
-      baseurl: "https://packages.microsoft.com/yumrepos/azure-cli"
-      gpgcheck: True
-      gpgkey: "https://packages.microsoft.com/keys/microsoft.asc"
-      state: "{{ state | default('present') }}"
-    become: True
-
-  - name: install azure-cli
-    yum:
-      name: "azure-cli"
-      state: present
-    become: True
-
-  - name: install kubectl
-    command: "az aks install-cli"
-    become: True
+- name: install kubectl
+  command: "az aks install-cli"
+  become: True
