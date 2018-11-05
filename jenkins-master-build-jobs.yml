@@ -7,4 +7,21 @@
     password: "{{ jenkins_admin_password }}"
     force_basic_auth: yes
     status_code: 201
+  register: dns_job
   ignore_errors: yes
+
+- debug: var=dns_job
+
+- name: run aks-cluster job
+  uri:
+    url: "http://localhost:8080/job/aks-cluster/build"
+    method: POST
+    user: "{{ jenkins_admin_username }}"
+    password: "{{ jenkins_admin_password }}"
+    force_basic_auth: yes
+    status_code: 201
+  register: aks_job
+  ignore_errors: yes  
+
+- debug: var=aks_job
+  

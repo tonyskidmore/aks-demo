@@ -34,7 +34,7 @@ variable "ssh_key_data" {
 
 variable "hostname" {
   description = "VM name referenced also in storage-related names."
-  default     = "myazurevm"
+  default     = "jenkins"
 }
 
 variable "admin_username" {
