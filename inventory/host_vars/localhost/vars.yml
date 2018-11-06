@@ -6,7 +6,7 @@ test: testing
 cloud_variables:
   azure:
     resource_group_name: "aks_demo_{{ ansible_user_id }}"
-    location: ukwest
+    location: uksouth
     nsg_source_address_prefix: "{{ ((terraform_source_ip is defined) and (terraform_source_ip | length > 0)) | ternary(terraform_source_ip,'*') }}"
     admin_username: cloud_admin
     ssh_key_data: "{{ ansible_user_dir }}/.ssh/aks_demo.pub"
