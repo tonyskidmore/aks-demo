@@ -16,12 +16,17 @@
     state: "{{ state | default('present') }}"
   become: True
 
-- name: install azure-cli
+- name: "Clean yum metadata"
+  command: "yum clean metadata"
+  args:
+    warn: no
+
+- name: "Install azure-cli"
   yum:
     name: "azure-cli"
     state: present
   become: True
 
-- name: install kubectl
+- name: "Install kubectl"
   command: "az aks install-cli"
   become: True
