@@ -24,4 +24,17 @@
   ignore_errors: yes  
 
 - debug: var=aks_job
-  
+
+
+- name: run test
+  uri:
+    url: "http://localhost:8080/job/test/build"
+    method: POST
+    user: "{{ jenkins_admin_username }}"
+    password: "{{ jenkins_admin_password }}"
+    force_basic_auth: yes
+    status_code: 201
+  register: test_job
+  ignore_errors: yes  
+
+- debug: var=test_job

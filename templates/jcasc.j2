@@ -77,4 +77,21 @@ jobs:
                   }
               }
           }
-      }      
+      }
+  - script: >
+      pipelineJob('test') {
+          definition {
+              cpsScm {
+                  scriptPath 'Jenkinsfile'
+                  scm {
+                    git {
+                        remote {
+                            url 'https://github.com/tonyskidmore/jenkins-echo-test.git'
+                        }
+                        branch '*/master'
+                        extensions {}
+                    }
+                  }
+              }
+          }
+      }         
