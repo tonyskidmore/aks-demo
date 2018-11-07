@@ -2,7 +2,10 @@
 
 working_dir=`pwd`
 
+# setup file structure for build
 cp files/default inventory/default
+mkdir -p terraform_files/azure
+cp files/azure/* terraform_files/azure
 
 # load required Azure environment variables + any TF vars
 source ~/.azure/azure_rc.sh

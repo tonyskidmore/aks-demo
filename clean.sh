@@ -6,7 +6,7 @@ if [ $? == 0 ]; then
     ./terraform workspace delete AZURE
 fi
 
-rm -rf terraform_files/azure
+rm -rf terraform_files/
 rm -rf terraform.tfstate.d
 rm -rf ./.terraform
 rm -f inventory/default
