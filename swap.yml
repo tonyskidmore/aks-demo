@@ -1,0 +1,36 @@
+---
+- name: Check swap file exists
+  stat:
+    path: "{{ swapfile }}"
+  register: swap_result
+  become: yes
+
+- name: Create, initialise & use swap file, if it doesn't exist already
+  block:
+    - name: Create swap file
+      command: "dd if=/dev/zero of={{ swapfile }} count={{ swapsize }} bs=1MiB"
+      become: yes
+
+    - name: Update swap file permissions
+      file:
+        path: "{{ swapfile }}"
+        owner: root
+        group: root
+        mode: 0600
+      become: yes
+
+    - name: Make it a swap file
+      command: "mkswap {{ swapfile }}"
+      become: yes
+
+    - name: Enable the swap file
+      command: "swapon {{ swapfile }}"
+      become: yes
+
+    - name: Permanently add swap file to fstab
+      lineinfile:
+        path: /etc/fstab
+        line: "/swapfile   swap    swap    sw  0   0"
+      become: yes
+
+  when: swap_result.stat.exists == False

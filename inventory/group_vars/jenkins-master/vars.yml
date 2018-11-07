@@ -41,6 +41,7 @@ az_client_id: ""
 az_secret: ""
 az_tenant: ""
 
+swapfile: "/swapfile"
 
 jenkins_credential_secret_text_entries:
   - id: ansible_vault
