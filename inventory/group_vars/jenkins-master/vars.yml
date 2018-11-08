@@ -42,6 +42,7 @@ az_secret: ""
 az_tenant: ""
 
 swapfile: "/swapfile"
+swapsize: 1024
 
 jenkins_credential_secret_text_entries:
   - id: ansible_vault
